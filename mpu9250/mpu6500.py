@@ -160,6 +160,8 @@ class MPU6500:
             oy += gy
             oz += gz
             count -= 1
+            print("\r", count, end = "")
+        
 
         self._gyro_offset = (ox / n, oy / n, oz / n)
         return self._gyro_offset

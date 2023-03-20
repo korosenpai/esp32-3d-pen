@@ -159,8 +159,6 @@ class AK8963:
             count -= 1
             print("\r", count, end = "")
         
-        print("\r")
-
         # Hard iron correction
         offset_x = (maxx + minx) / 2
         offset_y = (maxy + miny) / 2

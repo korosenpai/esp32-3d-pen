@@ -18,11 +18,18 @@ class MPU9250:
         self.mpu9250 = MPU9250DRIVERS(self.i2c)
         self.fusion = Fusion()
 
-        # Calibration and bias offset
-        debug_print("calibrating ak8963...")
-        self.mpu9250.ak8963.calibrate(count = 100)
-        self.fusion.calibrate(self.getmagxyz, 100)
+        # calibration for gyro
+        debug_print("calibrating mpu6500...")
+        print_notification("offset: " + repr(self.mpu9250.mpu6500.calibrate(count = 100, delay = 10)))
 
+        # Calibration and bias offset for magnetometer
+        debug_print("calibrating ak8963...")
+        print_notification("offset: " + repr(self.mpu9250.ak8963.calibrate(count = 100, delay = 100)))
+
+        debug_print("calibrating fusion ...")
+        print_notification("offset: " + repr(self.fusion.calibrate(self.getmagxyz, 100, wait = 100)))
+        
+    
         # For low pass filtering
         self.filtered_x_value = 0.0 
         self.filtered_y_value = 0.0
@@ -61,7 +68,8 @@ class MPU9250:
     
     @property
     def magn_heading(self):
-        # TODO tilt based compass
+        # TODO tilt compensated compass
+        # https://www.instructables.com/Tilt-Compensated-Compass/
 
         # Get soft_iron adjusted values from the magnetometer -> get less noise
         mag_x, mag_y, magz = self.mpu9250.magnetic
@@ -115,10 +123,13 @@ if __name__ == "__main__":
     mpu = MPU9250(Pin(22), Pin(21))
     
     while True:
-        # mpu.print_gyro()
-        print(mpu.degrees_to_heading(), mpu.magn_heading)
-
         mpu.fusion_update()
+
+
+        # mpu.print_gyro()
+        #print(mpu.degrees_to_heading(), mpu.magn_heading)
+        print(mpu.mpu9250.gyro)
+
 
 
         sleep(0.1)

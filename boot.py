@@ -4,6 +4,8 @@
 #import webrepl
 #webrepl.start()
 
+#sys.exit()
+
 print("\n") # separate logs from default messages of editor
 
 from machine import Pin
@@ -15,7 +17,6 @@ from json import dumps
 
 from funcs import *
 
-#sys.exit()
 
 btn = Pin(14, Pin.IN)
 led = Pin(13, Pin.OUT)

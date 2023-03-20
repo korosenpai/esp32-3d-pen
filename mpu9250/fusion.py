@@ -52,8 +52,11 @@ class Fusion(object):
                 magmin[x] = min(magmin[x], magxyz[x])
             
             count -= 1
+            print("\r", count, end = "")
             time.sleep(0.01)
         self.magbias = tuple(map(lambda a, b: (a +b)/2, magmin, magmax))
+
+        return self.magbias
 
     def update_nomag(self, accel, gyro):    # 3-tuples (x, y, z) for accel, gyro
         ax, ay, az = accel                  # Units G (but later normalised)

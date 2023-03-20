@@ -17,11 +17,11 @@ def colstr(msg: str, color: str):
     # use -> colstr('[DEBUG]', bcolors.WARNING)
     return f"{bcolors[color]}{msg}{bcolors['ENDC']}"
 
-def debug_print(msg, **kwargs):
-    print(f"{colstr('[DEBUG]', 'WARNING')} {msg}", **kwargs)
+def debug_print(*msg, **kwargs):
+    print(f"{colstr('[DEBUG]', 'WARNING')} {' '.join(msg)}", **kwargs)
 
-def print_notification(msg, **kwargs):
-    print(f"{colstr('[NOTICE]', 'HEADER')} {msg}", **kwargs)
+def print_notification(*msg, **kwargs):
+    print(f"{colstr('[NOTICE]', 'HEADER')} {' '.join(msg)}", **kwargs)
 
 def print_ok():
     print(f" {colstr('[ OK ]', 'OKGREEN')}")
