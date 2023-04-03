@@ -7,3 +7,5 @@ mpu9250/simple_test.py
 mpu9250/simple.py
 
 node_modules
+
+__pycache__
