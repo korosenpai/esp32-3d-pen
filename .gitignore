@@ -1,3 +1,4 @@
+notes.md
 src.txt
 
 old
@@ -6,9 +7,34 @@ tests
 mpu9250/simple_test.py
 mpu9250/simple.py
 
-node_modules
-
+madgwick_filter/
 __pycache__
 
-madgwick_filter/
-vue-computer-client/
+
+
+.DS_Store
+node_modules
+/dist
+
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+#Electron-builder output
+/dist_electron
