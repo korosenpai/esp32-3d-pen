@@ -4,19 +4,18 @@
 #import webrepl
 #webrepl.start()
 
-#sys.exit()
 
 print("\n") # separate logs from default messages of editor
 
 from machine import Pin
-import time
+from time import sleep
 import sys
 import _thread
-import usocket as socket
 from json import dumps
 
 from funcs import *
 
+#sys.exit()
 
 btn = Pin(14, Pin.IN)
 led = Pin(13, Pin.OUT)
@@ -64,47 +63,18 @@ _thread.start_new_thread(update_mpu, (mpu9250,)) # comma is to make it tuple
 
 ############## start server ##############
 
-connect_to_wifi("FASTWEB-B7135F", "34NNG8GFEZ")
-
-
-import socket
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind(('', 80))
-s.listen(5) # max 5 socket connections // max possible should be 16
 
 starting_up = False
 while True:
-    conn, addr = s.accept()
 
-    # recieve data
-    response = None
-    request = str(conn.recv(1024))
-    #print('Content = %s' % str(request))
+    # send data from sensors
+    temp_gyr =  mpu9250.gyro
+    testdata = {
+        "pitch": temp_gyr[0],
+        "roll": temp_gyr[1],
+        "heading": mpu9250.magn_heading,
+    }
 
-    # parse data
-    update = request.find("/getUpdate")
-
-    if update == 6:
-        # send data from sensors
-        temp_gyr =  mpu9250.gyro
-        testdata = {
-            "pitch": temp_gyr[0],
-            "roll": temp_gyr[1],
-            "heading": mpu9250.magn_heading,
-        }
-        response = dumps(testdata)
-        
-    else:
-        print_notification('Got a connection from %s' % str(addr)) # first time connection
-        # send default webpage
-        response = create_web_page()
-
-    
-    # Create a socket reply and close
-    conn.send('HTTP/1.1 200 OK\n')
-    conn.send('Content-Type: text/html\n')
-    conn.send('Connection: close\n\n')
-    conn.sendall(response)
-    conn.close()
-
+    print(dumps(testdata))
+    sleep(0.1)
 
