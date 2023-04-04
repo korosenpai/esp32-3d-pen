@@ -9,3 +9,6 @@ mpu9250/simple.py
 node_modules
 
 __pycache__
+
+madgwick_filter/
+vue-computer-client/
