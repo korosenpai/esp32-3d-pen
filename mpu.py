@@ -2,7 +2,7 @@
 
 
 from machine import SoftI2C, Pin
-from math import sqrt, atan2, pi, copysign, sin, cos
+from math import sqrt, atan2, pi, copysign, sin, cos, asin
 from time import sleep
 
 from mpu9250.mpu9250 import MPU9250 as MPU9250DRIVERS
@@ -20,7 +20,7 @@ class MPU9250:
 
         # calibration for gyro
         debug_print("calibrating mpu6500...")
-        print_notification("offset: " + repr(self.mpu9250.mpu6500.calibrate(count = 100, delay = 10)))
+        # print_notification("offset: " + repr(self.mpu9250.mpu6500.calibrate(count = 100, delay = 50)))
 
         # Calibration and bias offset for magnetometer
         debug_print("calibrating ak8963...")
@@ -31,8 +31,9 @@ class MPU9250:
         
     
         # For low pass filtering
-        self.filtered_x_value = 0.0 
-        self.filtered_y_value = 0.0
+        self.magn_f_x = 0.0  # magnetometer filtered x value
+        self.magn_f_y = 0.0
+        self.magn_f_z = 0.0
 
 
         self.fusion_update()
@@ -68,16 +69,33 @@ class MPU9250:
     
     @property
     def magn_heading(self):
-        # TODO tilt compensated compass
-        # https://www.instructables.com/Tilt-Compensated-Compass/
 
         # Get soft_iron adjusted values from the magnetometer -> get less noise
-        mag_x, mag_y, magz = self.mpu9250.magnetic
+        mag_x, mag_y, mag_z = self.mpu9250.magnetic
+        # gyr = [ round(x * pi / 180, 2) for x in self.gyro]
+        gyrRad = [ x * pi / 180 for x in self.mpu9250.gyro]
 
-        self.filtered_x_value = self.low_pass_filter(mag_x, self.filtered_x_value)
-        self.filtered_y_value = self.low_pass_filter(mag_y, self.filtered_y_value)
+        self.magn_f_x = self.low_pass_filter(mag_x, self.magn_f_x)
+        self.magn_f_y = self.low_pass_filter(mag_y, self.magn_f_y)
+        self.magn_f_z = self.low_pass_filter(mag_z, self.magn_f_z)
 
-        az =  90 - atan2(self.filtered_y_value, self.filtered_x_value) * 180 / pi
+        # works only on the plane
+        # az =  90 - atan2(self.magn_f_y, self.magn_f_x) * 180 / pi
+
+        # TODO tilt compensated compass
+        # https://www.instructables.com/Tilt-Compensated-Compass/
+        # https://www.best-microcontroller-projects.com/magnetometer-tilt-compensation.html
+        
+        # az = 180 * atan2(
+        #     self.magn_f_x * sin(gyrRad[1]) * sin(gyrRad[0]) + self.magn_f_y * cos(gyrRad[1]) - self.magn_f_z * sin(gyrRad[1]) * cos(gyrRad[0]),
+        #     self.magn_f_x * cos(gyrRad[0]) + self.magn_f_z * sin(gyrRad[0])
+        # ) / pi
+
+        Ym = self.magn_f_y * cos(gyrRad[1]) + self.magn_f_z * sin(gyrRad[1])
+        Xm = self.magn_f_x * cos(gyrRad[0]) - self.magn_f_y * sin(gyrRad[1]) * sin(gyrRad[0]) + self.magn_f_z * cos(gyrRad[1]) * sin(gyrRad[0])
+
+        az = 90 - atan2( Ym, Xm ) * 180 / pi
+
 
         # make sure the angle is always positive, and between 0 and 360 degrees
         if az < 0:
@@ -87,7 +105,6 @@ class MPU9250:
         # heading = self.degrees_to_heading(az)
 
         return az
-
 
     def low_pass_filter(self, raw_value:float, remembered_value):
         ''' Only applied 20% of the raw value to the filtered value '''
@@ -120,15 +137,16 @@ class MPU9250:
         return heading
 
 if __name__ == "__main__":
+
     mpu = MPU9250(Pin(22), Pin(21))
     
     while True:
         mpu.fusion_update()
-
-
         # mpu.print_gyro()
-        #print(mpu.degrees_to_heading(), mpu.magn_heading)
-        print(mpu.mpu9250.gyro)
+        print(mpu.degrees_to_heading(), mpu.magn_heading)
+        # #print(mpu.mpu9250.gyro)
+
+
 
 
 
