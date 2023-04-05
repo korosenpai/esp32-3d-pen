@@ -1,31 +1,32 @@
 {
-  "name": "vue-computer-client",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "electron:build": "vue-cli-service electron:build",
-    "electron:serve": "vue-cli-service electron:serve",
-    "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps"
-  },
-  "main": "background.js",
-  "dependencies": {
-    "core-js": "^3.8.3",
-    "three": "^0.151.3",
-    "vue": "^3.2.13",
-    "vuex": "^4.0.0"
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "~5.0.0",
-    "@vue/cli-plugin-vuex": "~5.0.0",
-    "@vue/cli-service": "~5.0.0",
-    "electron": "^24.0.0",
-    "electron-devtools-installer": "^3.1.0",
-    "sass": "^1.32.7",
-    "sass-loader": "^12.0.0",
-    "vue-cli-plugin-electron-builder": "~2.1.1",
-    "webpack-cli": "^5.0.1"
-  }
+    "name": "vue-computer-client",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "serve": "vue-cli-service serve",
+        "build": "vue-cli-service build",
+        "electron:build": "vue-cli-service electron:build",
+        "electron:serve": "vue-cli-service electron:serve",
+        "postinstall": "electron-builder install-app-deps",
+        "postuninstall": "electron-builder install-app-deps"
+    },
+    "main": "background.js",
+    "dependencies": {
+        "core-js": "^3.8.3",
+        "serialport": "^10.5.0",
+        "three": "^0.151.3",
+        "vue": "^3.2.13",
+        "vuex": "^4.0.0"
+    },
+    "devDependencies": {
+        "@vue/cli-plugin-babel": "~5.0.0",
+        "@vue/cli-plugin-vuex": "~5.0.0",
+        "@vue/cli-service": "~5.0.0",
+        "electron": "^24.0.0",
+        "electron-devtools-installer": "^3.1.0",
+        "sass": "^1.32.7",
+        "sass-loader": "^12.0.0",
+        "vue-cli-plugin-electron-builder": "~2.1.1",
+        "webpack-cli": "^5.0.1"
+    }
 }
