@@ -15,7 +15,7 @@ __pycache__
 .DS_Store
 vue-computer-client/node_modules
 /dist
-/dist_electron
+vue-computer-client/dist_electron
 
 
 # local env files
