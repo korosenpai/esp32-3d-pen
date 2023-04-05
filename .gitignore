@@ -13,7 +13,7 @@ __pycache__
 
 
 .DS_Store
-node_modules
+vue-computer-client/node_modules
 /dist
 /dist_electron
 

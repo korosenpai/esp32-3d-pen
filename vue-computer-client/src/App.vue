@@ -1,8 +1,10 @@
 <template>
-  <img alt="Vue logo" src="@/assets/logo.png">
+  <!-- <img alt="Vue logo" src="@/assets/logo.png"> -->
+  <ThreejsDemo />
 </template>
 
-<script>
+<script setup>
+import ThreejsDemo from "@/components/ThreejsDemoSpin.vue"
 
 </script>
 
