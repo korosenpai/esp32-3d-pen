@@ -57,7 +57,7 @@ class MPU9250:
 
     @property
     def gyro(self):
-        return self.fusion.pitch, self.fusion.roll
+        return -self.fusion.pitch, self.fusion.roll
 
     def print_gyro(self):
         pitch, roll = self.gyro
