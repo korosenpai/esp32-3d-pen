@@ -10,7 +10,6 @@
         "postinstall": "electron-builder install-app-deps",
         "postuninstall": "electron-builder install-app-deps"
     },
-    "main": "background.js",
     "dependencies": {
         "core-js": "^3.8.3",
         "serialport": "^10.5.0",
