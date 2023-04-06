@@ -14,9 +14,11 @@ export default createStore({
     },
 
     mutations: {
-        setPitch(state, pitch) { state.pitch = pitch },
-        setRoll(state, roll) { state.roll = roll },
-        setPMagnHeading(state, magnHeading) { state.magnHeading = magnHeading },
+        setGyro(state, gyro) {
+            state.pitch = gyro[0]
+            state.roll = gyro[1]
+        },
+        setMagnHeading(state, magnHeading) { state.magnHeading = magnHeading },
     },
     
     actions: {
