@@ -4,6 +4,7 @@
 
 <script setup>
 import * as THREE from 'three'
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 import { onMounted } from 'vue';
 
 let scene
@@ -12,6 +13,13 @@ let renderer
 let sceneObjects = []
 
 onMounted(() => {
+
+let scene
+let camera
+let renderer
+let object
+let orbit
+
 
 function init() {
     let container = document.getElementById( "container" )
@@ -24,9 +32,11 @@ function init() {
     renderer = new THREE.WebGLRenderer()
     renderer.setSize(window.innerWidth, window.innerHeight)
 
+    orbit = new OrbitControls(camera, renderer.domElement)
+
     container.appendChild(renderer.domElement)
     adjustLighting()
-    addBasicCube()
+    object = createBasicRect()
     animationLoop()
 }
 
@@ -39,24 +49,22 @@ function adjustLighting() {
     scene.add(ambientLight)
 }
 
-function addBasicCube() {
-    let geometry = new THREE.BoxGeometry(1, 1, 1)
-    let material = new THREE.MeshLambertMaterial()  
+function createBasicRect() {
+    let geometry = new THREE.BoxGeometry(2, .5, 1)
+    let material = new THREE.MeshLambertMaterial()
+
+    
 
     let mesh = new THREE.Mesh(geometry, material)
     // mesh.position.x = -2
     scene.add(mesh)
-    sceneObjects.push(mesh)
+    return mesh
 }
 
 function animationLoop() {
     renderer.render(scene, camera)
 
-    for(let object of sceneObjects) {
-        object.rotation.x += 0.01
-        object.rotation.y += 0.03
-        // object.rotation.z += 0.03
-    }
+    orbit.update() // rotate with mouse
 
     requestAnimationFrame(animationLoop)
 }
@@ -85,6 +93,6 @@ function onWindowResize(){
     position: fixed;
     top: 0;
     left: 0;
-    // z-index: -9999;
+    z-index: -9999;
 }
 </style>
