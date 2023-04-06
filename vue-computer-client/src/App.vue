@@ -1,14 +1,22 @@
 <template>
     <!-- <img alt="Vue logo" src="@/assets/logo.png"> -->
+    
+    <PrintData />
     <ThreejsDemo />
 </template>
 
 <script setup>
-import ThreejsDemo from "@/components/ThreejsDemoSpin.vue"
+import { useStore } from "vuex"
 
+import PrintData from "@/components/PrintData.vue"
+import ThreejsDemo from "@/components/GyroDemo.vue"
 
 const { SerialPort } = require('serialport')
 const { ReadlineParser } = require("@serialport/parser-readline")
+
+const store = useStore()
+
+
 
 // TODO check validity of https://stackoverflow.com/questions/66062682/serial-port-with-electron-vue-js
 
@@ -24,12 +32,14 @@ const parser = port.pipe(new ReadlineParser({ delimiter: '\n' }))
 parser.on("data", data => {
     try {
         data = JSON.parse(data)
+        store.commit("setGyro", data.gyro)
+        store.commit("setMagnHeading", data.heading)
 
 
     } catch (error) {
-        console.log(1)
+        // first calibrations
+        console.log(data)
     }
-    console.log(data)
 })
 
 </script>
