@@ -18,8 +18,17 @@ const port = new SerialPort({
 })
 
 const parser = port.pipe(new ReadlineParser({ delimiter: '\n' }))
+// port.open()
+
 
 parser.on("data", data => {
+    try {
+        data = JSON.parse(data)
+
+
+    } catch (error) {
+        console.log(1)
+    }
     console.log(data)
 })
 
