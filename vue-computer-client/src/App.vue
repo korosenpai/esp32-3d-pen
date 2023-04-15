@@ -1,8 +1,8 @@
 <template>
     <!-- <img alt="Vue logo" src="@/assets/logo.png"> -->
-    
     <PrintData />
-    <ThreejsDemo />
+    <!-- <ThreejsDemo /> -->
+    <Canvas2dDemo />
 </template>
 
 <script setup>
@@ -10,6 +10,8 @@ import { useStore } from "vuex"
 
 import PrintData from "@/components/PrintData.vue"
 import ThreejsDemo from "@/components/GyroDemo.vue"
+import Canvas2dDemo from "./components/Canvas2dDemo.vue";
+
 
 const { SerialPort } = require('serialport')
 const { ReadlineParser } = require("@serialport/parser-readline")
@@ -32,12 +34,15 @@ const parser = port.pipe(new ReadlineParser({ delimiter: '\n' }))
 parser.on("data", data => {
     try {
         data = JSON.parse(data)
-        store.commit("setGyro", data.gyro)
-        store.commit("setMagnHeading", data.heading)
+
+        if (data.accel) { store.commit("setAccel", data.accel) }
+        if (data.gyro) { store.commit("setGyro", data.gyro) }
+        if (data.heading) { store.commit("setMagnHeading", data.heading) }
 
 
     } catch (error) {
-        // first calibrations
+        // first calibrations, data not yet send via json format
+        // TODO check if error is json and if other error raise it
         console.log(data)
     }
 })
@@ -45,14 +50,5 @@ parser.on("data", data => {
 </script>
 
 <style lang="scss">
-#app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    // text-align: center;
-    // color: #2c3e50;
-    // margin-top: 60px;
-    margin: 0;
-    padding: 0;
-}
+
 </style>
