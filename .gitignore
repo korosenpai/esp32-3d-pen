@@ -17,6 +17,8 @@ vue-computer-client/node_modules
 /dist
 vue-computer-client/dist_electron
 
+vue-computer-client/src/assets/3d-models
+
 
 # local env files
 .env.local
