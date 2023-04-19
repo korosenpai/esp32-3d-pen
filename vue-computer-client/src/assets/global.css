@@ -1,11 +1,21 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Disable scrollbars */
+}
+
 body {
     /* from app.vue */
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /*  */
 
     background-color: black;
-    margin: 0;
-    padding: 0;
     color: white;
 }
