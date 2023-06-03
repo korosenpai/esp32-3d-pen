@@ -3,6 +3,7 @@ src.txt
 
 old
 tests
+demos
 
 mpu9250/simple_test.py
 mpu9250/simple.py
